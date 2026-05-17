@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPA智刷 - 注册会计师考试刷题平台</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo" onclick="navigate('home')">
+                <i class="fas fa-graduation-cap"></i>
+                <span>CPA智刷</span>
+            </a>
+            <div class="nav-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="搜索题目、考点..." id="globalSearch" maxlength="100" onkeyup="handleGlobalSearch(event)">
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active" data-page="home" onclick="navigate('home')">
+                    <i class="fas fa-home"></i><span>首页</span>
+                </a>
+                <a href="#" class="nav-link" data-page="subjects" onclick="navigate('subjects')">
+                    <i class="fas fa-book"></i><span>题库</span>
+                </a>
+                <a href="#" class="nav-link" data-page="exam" onclick="navigate('exam')">
+                    <i class="fas fa-clock"></i><span>模拟考试</span>
+                </a>
+                <a href="#" class="nav-link" data-page="wrong" onclick="navigate('wrong')">
+                    <i class="fas fa-times-circle"></i><span>错题本</span>
+                </a>
+                <a href="#" class="nav-link" data-page="favorites" onclick="navigate('favorites')">
+                    <i class="fas fa-star"></i><span>收藏夹</span>
+                </a>
+                <a href="#" class="nav-link" data-page="notes" onclick="navigate('notes')">
+                    <i class="fas fa-sticky-note"></i><span>笔记</span>
+                </a>
+                <a href="#" class="nav-link" data-page="stats" onclick="navigate('stats')">
+                    <i class="fas fa-chart-bar"></i><span>统计</span>
+                </a>
+                <a href="#" class="nav-link" data-page="daily" onclick="navigate('daily')">
+                    <i class="fas fa-calendar-day"></i><span>每日一练</span>
+                </a>
+                <a href="#" class="nav-link" data-page="ranking" onclick="navigate('ranking')">
+                    <i class="fas fa-trophy"></i><span>排行榜</span>
+                </a>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 移动端侧边栏 -->
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <div class="sidebar-header">
+            <span>CPA智刷</span>
+            <button onclick="toggleMobileMenu()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="sidebar-links">
+            <a href="#" onclick="navigate('home');toggleMobileMenu()"><i class="fas fa-home"></i> 首页</a>
+            <a href="#" onclick="navigate('subjects');toggleMobileMenu()"><i class="fas fa-book"></i> 题库</a>
+            <a href="#" onclick="navigate('exam');toggleMobileMenu()"><i class="fas fa-clock"></i> 模拟考试</a>
+            <a href="#" onclick="navigate('wrong');toggleMobileMenu()"><i class="fas fa-times-circle"></i> 错题本</a>
+            <a href="#" onclick="navigate('favorites');toggleMobileMenu()"><i class="fas fa-star"></i> 收藏夹</a>
+            <a href="#" onclick="navigate('notes');toggleMobileMenu()"><i class="fas fa-sticky-note"></i> 笔记</a>
+            <a href="#" onclick="navigate('stats');toggleMobileMenu()"><i class="fas fa-chart-bar"></i> 统计</a>
+            <a href="#" onclick="navigate('daily');toggleMobileMenu()"><i class="fas fa-calendar-day"></i> 每日一练</a>
+            <a href="#" onclick="navigate('ranking');toggleMobileMenu()"><i class="fas fa-trophy"></i> 排行榜</a>
+        </div>
+    </div>
+    <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
+
+    <!-- 主内容区 -->
+    <main class="main-content" id="mainContent">
+        <!-- 首页 -->
+        <div class="page active" id="page-home">
+            <div class="hero-section">
+                <div class="hero-bg"></div>
+                <div class="hero-content">
+                    <h1>CPA注册会计师<span class="gradient-text">智能刷题平台</span></h1>
+                    <p class="hero-subtitle">5100+ 精选真题 · AI增强解析 · 六科全覆盖 · 高效通关</p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="totalQuestions">5100</div>
+                            <div class="stat-label">精选题目</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">6</div>
+                            <div class="stat-label">考试科目</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">AI</div>
+                            <div class="stat-label">智能解析</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">∞</div>
+                            <div class="stat-label">免费使用</div>
+                        </div>
+                    </div>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" onclick="navigate('subjects')">
+                            <i class="fas fa-rocket"></i> 开始刷题
+                        </button>
+                        <button class="btn btn-outline btn-lg" onclick="navigate('daily')">
+                            <i class="fas fa-calendar-day"></i> 每日一练
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 科目卡片 -->
+            <section class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-book-open"></i> 选择科目</h2>
+                    <p>覆盖CPA考试全部六科，每科至少300题</p>
+                </div>
+                <div class="subject-grid" id="subjectGrid"></div>
+            </section>
+
+            <!-- 学习进度 -->
+            <section class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> 我的学习进度</h2>
+                </div>
+                <div class="progress-overview" id="progressOverview"></div>
+            </section>
+
+            <!-- 快捷入口 -->
+            <section class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-bolt"></i> 快捷入口</h2>
+                </div>
+                <div class="quick-actions">
+                    <div class="action-card" onclick="navigate('exam')">
+                        <div class="action-icon" style="background: linear-gradient(135deg, #667eea, #764ba2)">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h3>模拟考试</h3>
+                        <p>限时模拟真实考试环境</p>
+                    </div>
+                    <div class="action-card" onclick="navigate('wrong')">
+                        <div class="action-icon" style="background: linear-gradient(135deg, #f093fb, #f5576c)">
+                            <i class="fas fa-redo"></i>
+                        </div>
+                        <h3>错题重做</h3>
+                        <p>针对性攻克薄弱环节</p>
+                    </div>
+                    <div class="action-card" onclick="navigate('daily')">
+                        <div class="action-icon" style="background: linear-gradient(135deg, #4facfe, #00f2fe)">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <h3>每日一练</h3>
+                        <p>每天进步一点点</p>
+                    </div>
+                    <div class="action-card" onclick="navigate('stats')">
+                        <div class="action-icon" style="background: linear-gradient(135deg, #43e97b, #38f9d7)">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h3>学习统计</h3>
+                        <p>全面掌握学习情况</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 科目/题库页 -->
+        <div class="page" id="page-subjects">
+            <div class="page-header">
+                <h1><i class="fas fa-book"></i> 题库中心</h1>
+                <p>选择科目和章节开始刷题</p>
+            </div>
+            <div class="subject-detail" id="subjectDetail"></div>
+        </div>
+
+        <!-- 刷题页 -->
+        <div class="page" id="page-quiz">
+            <div class="quiz-container" id="quizContainer"></div>
+        </div>
+
+        <!-- 模拟考试页 -->
+        <div class="page" id="page-exam">
+            <div class="page-header">
+                <h1><i class="fas fa-clock"></i> 模拟考试</h1>
+                <p>选择科目，限时完成一套完整试卷</p>
+            </div>
+            <div class="exam-setup" id="examSetup"></div>
+        </div>
+
+        <!-- 模拟考试进行中 -->
+        <div class="page" id="page-exam-taking">
+            <div class="exam-taking-container" id="examTakingContainer"></div>
+        </div>
+
+        <!-- 错题本 -->
+        <div class="page" id="page-wrong">
+            <div class="page-header">
+                <h1><i class="fas fa-times-circle"></i> 错题本</h1>
+                <p>回顾做错的题目，巩固薄弱知识点</p>
+            </div>
+            <div class="wrong-book" id="wrongBook"></div>
+        </div>
+
+        <!-- 收藏夹 -->
+        <div class="page" id="page-favorites">
+            <div class="page-header">
+                <h1><i class="fas fa-star"></i> 收藏夹</h1>
+                <p>收藏重要题目，方便随时复习</p>
+            </div>
+            <div class="favorites-list" id="favoritesList"></div>
+        </div>
+
+        <!-- 笔记 -->
+        <div class="page" id="page-notes">
+            <div class="page-header">
+                <h1><i class="fas fa-sticky-note"></i> 我的笔记</h1>
+                <p>记录学习心得和重点知识</p>
+            </div>
+            <div class="notes-container" id="notesContainer"></div>
+        </div>
+
+        <!-- 学习统计 -->
+        <div class="page" id="page-stats">
+            <div class="page-header">
+                <h1><i class="fas fa-chart-bar"></i> 学习统计</h1>
+                <p>全面了解你的学习情况</p>
+            </div>
+            <div class="stats-container" id="statsContainer"></div>
+        </div>
+
+        <!-- 每日一练 -->
+        <div class="page" id="page-daily">
+            <div class="page-header">
+                <h1><i class="fas fa-calendar-day"></i> 每日一练</h1>
+                <p>每天精选10题，保持学习节奏</p>
+            </div>
+            <div class="daily-container" id="dailyContainer"></div>
+        </div>
+
+        <!-- 排行榜 -->
+        <div class="page" id="page-ranking">
+            <div class="page-header">
+                <h1><i class="fas fa-trophy"></i> 学习排行榜</h1>
+                <p>与其他考生一起进步</p>
+            </div>
+            <div class="ranking-container" id="rankingContainer"></div>
+        </div>
+
+        <!-- 搜索结果页 -->
+        <div class="page" id="page-search">
+            <div class="page-header">
+                <h1><i class="fas fa-search"></i> 搜索结果</h1>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>CPA智刷 - 注册会计师考试刷题平台 | 题目仅供学习参考</p>
+            <p>© 2024 CPA智刷 All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <!-- Toast通知 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- 笔记编辑模态框 -->
+    <div class="modal-overlay" id="noteModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> 编辑笔记</h3>
+                <button class="modal-close" onclick="closeNoteModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>题目摘要</label>
+                    <div class="note-question-preview" id="noteQuestionPreview"></div>
+                </div>
+                <div class="form-group">
+                    <label>我的笔记</label>
+                    <textarea id="noteContent" rows="6" maxlength="2000" placeholder="记录你的理解和记忆方法..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>标签</label>
+                    <input type="text" id="noteTags" placeholder="用逗号分隔，如：重点,易错,必考">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline" onclick="closeNoteModal()">取消</button>
+                <button class="btn btn-primary" onclick="saveNote()"><i class="fas fa-save"></i> 保存</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
