@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#4f46e5">
+    <meta name="description" content="CPA智刷 - 注册会计师考试刷题平台，5100+精选真题，支持离线刷题">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="CPA智刷">
     <title>CPA智刷 - 注册会计师考试刷题平台</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -12,7 +19,7 @@
     <!-- 顶部导航栏 -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="#" class="nav-logo" onclick="navigate('home')">
+            <a href="javascript:void(0)" class="nav-logo" onclick="navigate('home')">
                 <i class="fas fa-graduation-cap"></i>
                 <span>CPA智刷</span>
             </a>
@@ -21,31 +28,31 @@
                 <input type="text" placeholder="搜索题目、考点..." id="globalSearch" maxlength="100" onkeyup="handleGlobalSearch(event)">
             </div>
             <div class="nav-links">
-                <a href="#" class="nav-link active" data-page="home" onclick="navigate('home')">
+                <a href="javascript:void(0)" class="nav-link active" data-page="home" onclick="navigate('home')">
                     <i class="fas fa-home"></i><span>首页</span>
                 </a>
-                <a href="#" class="nav-link" data-page="subjects" onclick="navigate('subjects')">
+                <a href="javascript:void(0)" class="nav-link" data-page="subjects" onclick="navigate('subjects')">
                     <i class="fas fa-book"></i><span>题库</span>
                 </a>
-                <a href="#" class="nav-link" data-page="exam" onclick="navigate('exam')">
+                <a href="javascript:void(0)" class="nav-link" data-page="exam" onclick="navigate('exam')">
                     <i class="fas fa-clock"></i><span>模拟考试</span>
                 </a>
-                <a href="#" class="nav-link" data-page="wrong" onclick="navigate('wrong')">
+                <a href="javascript:void(0)" class="nav-link" data-page="wrong" onclick="navigate('wrong')">
                     <i class="fas fa-times-circle"></i><span>错题本</span>
                 </a>
-                <a href="#" class="nav-link" data-page="favorites" onclick="navigate('favorites')">
+                <a href="javascript:void(0)" class="nav-link" data-page="favorites" onclick="navigate('favorites')">
                     <i class="fas fa-star"></i><span>收藏夹</span>
                 </a>
-                <a href="#" class="nav-link" data-page="notes" onclick="navigate('notes')">
+                <a href="javascript:void(0)" class="nav-link" data-page="notes" onclick="navigate('notes')">
                     <i class="fas fa-sticky-note"></i><span>笔记</span>
                 </a>
-                <a href="#" class="nav-link" data-page="stats" onclick="navigate('stats')">
+                <a href="javascript:void(0)" class="nav-link" data-page="stats" onclick="navigate('stats')">
                     <i class="fas fa-chart-bar"></i><span>统计</span>
                 </a>
-                <a href="#" class="nav-link" data-page="daily" onclick="navigate('daily')">
+                <a href="javascript:void(0)" class="nav-link" data-page="daily" onclick="navigate('daily')">
                     <i class="fas fa-calendar-day"></i><span>每日一练</span>
                 </a>
-                <a href="#" class="nav-link" data-page="ranking" onclick="navigate('ranking')">
+                <a href="javascript:void(0)" class="nav-link" data-page="ranking" onclick="navigate('ranking')">
                     <i class="fas fa-trophy"></i><span>排行榜</span>
                 </a>
             </div>
@@ -62,15 +69,21 @@
             <button onclick="toggleMobileMenu()"><i class="fas fa-times"></i></button>
         </div>
         <div class="sidebar-links">
-            <a href="#" onclick="navigate('home');toggleMobileMenu()"><i class="fas fa-home"></i> 首页</a>
-            <a href="#" onclick="navigate('subjects');toggleMobileMenu()"><i class="fas fa-book"></i> 题库</a>
-            <a href="#" onclick="navigate('exam');toggleMobileMenu()"><i class="fas fa-clock"></i> 模拟考试</a>
-            <a href="#" onclick="navigate('wrong');toggleMobileMenu()"><i class="fas fa-times-circle"></i> 错题本</a>
-            <a href="#" onclick="navigate('favorites');toggleMobileMenu()"><i class="fas fa-star"></i> 收藏夹</a>
-            <a href="#" onclick="navigate('notes');toggleMobileMenu()"><i class="fas fa-sticky-note"></i> 笔记</a>
-            <a href="#" onclick="navigate('stats');toggleMobileMenu()"><i class="fas fa-chart-bar"></i> 统计</a>
-            <a href="#" onclick="navigate('daily');toggleMobileMenu()"><i class="fas fa-calendar-day"></i> 每日一练</a>
-            <a href="#" onclick="navigate('ranking');toggleMobileMenu()"><i class="fas fa-trophy"></i> 排行榜</a>
+            <div class="sidebar-search" style="padding: 12px 20px; border-bottom: 1px solid #e2e8f0;">
+                <div style="position: relative;">
+                    <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 13px;"></i>
+                    <input type="text" placeholder="搜索题目..." id="mobileSearch" onkeyup="handleMobileSearch(event)" style="width: 100%; padding: 8px 12px 8px 36px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px;">
+                </div>
+            </div>
+            <a href="javascript:void(0)" onclick="navigate('home');toggleMobileMenu()"><i class="fas fa-home"></i> 首页</a>
+            <a href="javascript:void(0)" onclick="navigate('subjects');toggleMobileMenu()"><i class="fas fa-book"></i> 题库</a>
+            <a href="javascript:void(0)" onclick="navigate('exam');toggleMobileMenu()"><i class="fas fa-clock"></i> 模拟考试</a>
+            <a href="javascript:void(0)" onclick="navigate('wrong');toggleMobileMenu()"><i class="fas fa-times-circle"></i> 错题本</a>
+            <a href="javascript:void(0)" onclick="navigate('favorites');toggleMobileMenu()"><i class="fas fa-star"></i> 收藏夹</a>
+            <a href="javascript:void(0)" onclick="navigate('notes');toggleMobileMenu()"><i class="fas fa-sticky-note"></i> 笔记</a>
+            <a href="javascript:void(0)" onclick="navigate('stats');toggleMobileMenu()"><i class="fas fa-chart-bar"></i> 统计</a>
+            <a href="javascript:void(0)" onclick="navigate('daily');toggleMobileMenu()"><i class="fas fa-calendar-day"></i> 每日一练</a>
+            <a href="javascript:void(0)" onclick="navigate('ranking');toggleMobileMenu()"><i class="fas fa-trophy"></i> 排行榜</a>
         </div>
     </div>
     <div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
@@ -299,6 +312,6 @@
     </div>
 
     <script src="js/data.js"></script>
-    <script src="js/app.js"></script>
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>

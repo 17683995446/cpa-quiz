@@ -85,21 +85,64 @@ let allQuestionsLoaded = false;
 /**
  * 加载单个科目的题目数据
  */
-async function loadSubjectData(subjectId) {
+// 修复严重缺陷R14-005：添加fetch重试机制和超时处理
+async function loadSubjectData(subjectId, retryCount = 3) {
     if (questionCache[subjectId]) {
         return questionCache[subjectId];
     }
     
-    try {
-        const response = await fetch(`data/${subjectId}.json`);
-        if (!response.ok) throw new Error(`加载${subjectId}数据失败`);
-        const data = await response.json();
-        questionCache[subjectId] = data;
-        return data;
-    } catch (error) {
-        console.error(`加载${subjectId}题目数据出错:`, error);
-        return [];
+    const subjectName = SUBJECTS_CONFIG[subjectId]?.name || subjectId;
+    
+    for (let i = 0; i < retryCount; i++) {
+        try {
+            // 添加超时控制（10秒）
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000);
+            
+            const response = await fetch(`data/${subjectId}.json`, {
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            const data = await response.json();
+            questionCache[subjectId] = data;
+            return data;
+        } catch (error) {
+            const isLastRetry = i === retryCount - 1;
+            
+            if (error.name === 'AbortError') {
+                if (isLastRetry) {
+                    if (typeof showToast === 'function') {
+                        showToast(`加载${subjectName}数据超时，请检查网络`, 'error');
+                    }
+                    return [];
+                }
+            } else if (error.name === 'TypeError' || error.message.includes('fetch')) {
+                if (isLastRetry) {
+                    if (typeof showToast === 'function') {
+                        showToast(`网络连接失败，请检查网络后刷新重试`, 'error');
+                    }
+                    return [];
+                }
+            } else {
+                // 非网络错误，直接返回
+                if (typeof showToast === 'function') {
+                    showToast(`加载${subjectName}数据失败: ${error.message}`, 'error');
+                }
+                return [];
+            }
+            
+            // 指数退避重试（1s, 2s, 4s）
+            if (!isLastRetry) {
+                await new Promise(r => setTimeout(r, 1000 * Math.pow(2, i)));
+            }
+        }
     }
+    
+    return [];
 }
 
 /**
@@ -108,9 +151,19 @@ async function loadSubjectData(subjectId) {
 async function loadAllSubjects() {
     if (allQuestionsLoaded) return;
     
-    const promises = Object.keys(SUBJECTS_CONFIG).map(id => loadSubjectData(id));
-    await Promise.all(promises);
-    allQuestionsLoaded = true;
+    const subjectIds = Object.keys(SUBJECTS_CONFIG);
+    const results = await Promise.allSettled(subjectIds.map(id => loadSubjectData(id)));
+    
+    // 修复BUG-R10-016：检查是否有科目加载失败
+    const failedSubjects = results.filter(r => r.status === 'rejected').length;
+    const emptySubjects = results.filter(r => r.status === 'fulfilled' && r.value.length === 0).length;
+    
+    if (failedSubjects + emptySubjects > 0 && failedSubjects + emptySubjects < subjectIds.length) {
+        // 部分失败：不设allQuestionsLoaded，允许后续重试
+        console.warn(`${failedSubjects + emptySubjects}/${subjectIds.length} 科目加载失败，后续可重试`);
+    } else {
+        allQuestionsLoaded = true;
+    }
 }
 
 /**
@@ -204,11 +257,12 @@ function searchQuestions(keyword) {
     Object.keys(SUBJECTS_CONFIG).forEach(subjectId => {
         const questions = getSubjectQuestions(subjectId);
         questions.forEach(q => {
+            // 修复BUG-037：添加空值检查，防止字段缺失导致崩溃
             if (
-                q.question.toLowerCase().includes(lowerKeyword) ||
-                q.key_point.toLowerCase().includes(lowerKeyword) ||
-                q.explanation.toLowerCase().includes(lowerKeyword) ||
-                q.chapter.toLowerCase().includes(lowerKeyword)
+                (q.question || '').toLowerCase().includes(lowerKeyword) ||
+                (q.key_point || '').toLowerCase().includes(lowerKeyword) ||
+                (q.explanation || '').toLowerCase().includes(lowerKeyword) ||
+                (q.chapter || '').toLowerCase().includes(lowerKeyword)
             ) {
                 results.push({ ...q, subjectId, subjectName: SUBJECTS_CONFIG[subjectId].name });
             }

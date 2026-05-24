@@ -441,6 +441,7 @@ input, textarea, select {
     left: 0;
     right: 0;
     height: 4px;
+    pointer-events: none; /* 修复R11-01：伪元素不拦截点击事件 */
 }
 
 .subject-card:hover {
@@ -2233,4 +2234,18 @@ input, textarea, select {
     display: flex;
     justify-content: center;
     gap: 12px;
+}
+
+/* 修复BUG-R10-002：为运动敏感用户减少动画 */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    .page { opacity: 1 !important; }
+    .toast { animation: none !important; }
+    .modal { animation: none !important; }
+    .bar-fill, .ring-fill { transition: none !important; }
 }
